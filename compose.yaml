@@ -1,0 +1,14 @@
+services:
+  activedirectory:
+    build:
+      context: .
+    image: local/ad
+    environment:
+      SMB_ADMIN_PASSWORD: admin123!
+    hostname: ldap.local
+    ports:
+      - 389:389
+      - 636:636
+    privileged: true
+    volumes:
+      - ./data:/var/lib/samba
