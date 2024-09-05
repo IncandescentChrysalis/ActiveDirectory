@@ -12,3 +12,27 @@ services:
     privileged: true
     volumes:
       - ./data:/var/lib/samba
+
+  kafka-ui:
+    depends_on:
+      - activedirectory
+    image: provectuslabs/kafka-ui:v0.6.2
+    #image: provectuslabs/kafka-ui:v0.7.0
+    #image: provectuslabs/kafka-ui:v0.7.1
+    #image: kafbat/kafka-ui:v1.0.0
+    network_mode: host
+    ports:
+      - 8080:8080
+    environment:
+      #LOGGING_LEVEL_ROOT: trace
+
+      AUTH_TYPE: LDAP
+      SPRING_LDAP_URLS: "ldap://127.0.0.1"
+
+      #OAUTH2_LDAP_ACTIVEDIRECTORY: "true"
+      #OAUTH2_LDAP_AСTIVEDIRECTORY_DOMAIN: "ldap.local"
+
+      SPRING_LDAP_USERFILTER_SEARCHBASE: "DC=ldap,DC=local"
+      SPRING_LDAP_USERFILTER_SEARCHFILTER: "(&(objectClass=user)(sAMAccountName={0}))"
+      SPRING_LDAP_ADMINUSER: "CN=Administrator,CN=Users,DC=ldap,DC=local"
+      SPRING_LDAP_ADMINPASSWORD: "admin123!"
